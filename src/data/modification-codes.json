@@ -86,5 +86,29 @@
     "tags": ["突袭", "稳定"],
     "note": "幻影余烬主宰者MK47",
     "price": 864227
+  },
+  {
+    "weapon": "AWM狙击步枪",
+    "modification-code": "6JAS7DG0BB9B3KKCCH41C",
+    "mode": "烽火地带",
+    "tags": [],
+    "note": "",
+    "price": 899872
+  },
+  {
+    "weapon": "MCX LT突击步枪",
+    "modification-code": "6JJGQFS0BB9B3KKCCH41C",
+    "mode": "烽火地带",
+    "tags": ["稳定", "常规"],
+    "note": "中距离机密局好用的突击步枪",
+    "price": 474581
+  },
+  {
+    "weapon": "KC17突击步枪",
+    "modification-code": "6JJGQQ40BB9B3KKCCH41C",
+    "mode": "烽火地带",
+    "tags": ["性价比"],
+    "note": "性价比很高",
+    "price": 373532
   }
 ]
