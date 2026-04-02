@@ -31,17 +31,17 @@ export default function ErrorPage() {
 
             {/* Error Title */}
             <h1 className="mt-4 text-2xl font-bold text-gray-900">
-              Oops! Something went wrong
+              页面出现错误
             </h1>
 
             {/* Error Message */}
             <div className="mt-4">
               <p className="text-sm text-gray-600">
-                {error?.statusText ?? error?.message ?? "An unexpected error occurred"}
+                {error?.statusText ?? error?.message ?? "发生了未预期的错误"}
               </p>
               {error?.status && (
                 <p className="text-xs text-gray-500 mt-1">
-                  Error Code: {error.status}
+                  错误代码：{error.status}
                 </p>
               )}
             </div>
@@ -52,13 +52,13 @@ export default function ErrorPage() {
                 to="/"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Go back home
+                返回首页
               </Link>
               <button
                 onClick={() => window.history.back()}
                 className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Go back
+                返回上一页
               </button>
             </div>
           </div>
