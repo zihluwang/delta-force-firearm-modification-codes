@@ -48,9 +48,9 @@ const MOD_CODES: ModCode[] = (rawModCodes as ModCodeSource[]).map((item, index) 
 }))
 
 export default function ModCodes() {
-  const [keyword, setKeyword] = useState("")
   const [activeTag, setActiveTag] = useState<string>("全部")
   const [activeWeapon, setActiveWeapon] = useState<string>("全部")
+  const [activeMode, setActiveMode] = useState<string>("全部")
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [copyErrorId, setCopyErrorId] = useState<string | null>(null)
 
@@ -77,6 +77,16 @@ export default function ModCodes() {
     return ["全部", ...Array.from(weapons)]
   }, [])
 
+  const allModes = useMemo(() => {
+    const modes = new Set<string>()
+    MOD_CODES.forEach((item) => {
+      if (item.mode) {
+        modes.add(item.mode)
+      }
+    })
+    return ["全部", ...Array.from(modes)]
+  }, [])
+
   const allTags = useMemo(() => {
     const tags = new Set<string>()
     MOD_CODES.forEach((item) => {
@@ -86,19 +96,13 @@ export default function ModCodes() {
   }, [])
 
   const filtered = useMemo(() => {
-    const q = keyword.trim().toLowerCase()
     return MOD_CODES.filter((item) => {
       const matchWeapon = activeWeapon === "全部" || item.weapon === activeWeapon
+      const matchMode = activeMode === "全部" || item.mode === activeMode
       const matchTag = activeTag === "全部" || item.tags.includes(activeTag)
-      const matchKeyword =
-        q.length === 0 ||
-        item.weapon.toLowerCase().includes(q) ||
-        item.code.toLowerCase().includes(q) ||
-        (item.mode?.toLowerCase().includes(q) ?? false) ||
-        item.tags.some((tag) => tag.toLowerCase().includes(q))
-      return matchWeapon && matchTag && matchKeyword
+      return matchWeapon && matchMode && matchTag
     })
-  }, [activeWeapon, activeTag, keyword])
+  }, [activeMode, activeWeapon, activeTag])
 
   const colCount = useColumnCount()
 
@@ -126,9 +130,7 @@ export default function ModCodes() {
   return (
     <section className="space-y-6">
       <div className="space-y-4 px-1">
-        <p className="text-sm text-gray-600">
-          支持按武器、tag 与关键字筛选。关键字可匹配枪械名称、改枪码或 tag。
-        </p>
+        <p className="text-sm text-gray-600">支持按武器、模式与 tag 筛选。</p>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <label className="block">
@@ -144,21 +146,24 @@ export default function ModCodes() {
             </select>
           </label>
           <label className="block">
-            <span className="block text-sm font-medium text-gray-700 mb-1">关键字查找</span>
-            <input
-              value={keyword}
-              onChange={(event) => setKeyword(event.target.value)}
-              placeholder="例如：M4、近战、DF-"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            />
+            <span className="block text-sm font-medium text-gray-700 mb-1">模式筛选</span>
+            <select
+              value={activeMode}
+              onChange={(event) => setActiveMode(event.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white"
+            >
+              {allModes.map((mode) => (
+                <option key={mode} value={mode}>{mode}</option>
+              ))}
+            </select>
           </label>
           <div className="flex items-end">
             <button
               type="button"
               onClick={() => {
-                setKeyword("")
                 setActiveTag("全部")
                 setActiveWeapon("全部")
+                setActiveMode("全部")
               }}
               className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
