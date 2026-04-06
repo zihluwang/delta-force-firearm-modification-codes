@@ -34,7 +34,7 @@ export default function ModCodesPage() {
   return (
     <>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <Typography.Title level={4} className="!mb-0">
+        <Typography.Title level={4} className="mb-0!">
           改枪码列表
         </Typography.Title>
         {firearmId && (
@@ -59,7 +59,7 @@ export default function ModCodesPage() {
                 }}
               >
                 <div className="flex flex-col gap-3">
-                  <Typography.Paragraph className="!mb-0" copyable={{ text: modification.code }}>
+                  <Typography.Paragraph className="mb-0!" copyable={{ text: modification.code }}>
                     <strong>改枪码：</strong>
                     {modification.code}
                   </Typography.Paragraph>

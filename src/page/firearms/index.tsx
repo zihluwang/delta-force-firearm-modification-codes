@@ -70,8 +70,7 @@ export default function FirearmsPage() {
                   <Link key={`mod-codes-${firearm.id}`} to={`/mod-codes?firearmId=${firearm.id}`}>
                     <Button type="link">查看改枪码</Button>
                   </Link>,
-                ]}
-              >
+                ]}>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <Tag color="blue">{firearmTypeText[firearm.type]}</Tag>
@@ -80,7 +79,11 @@ export default function FirearmsPage() {
                     <strong>武器输出等级：</strong>
                     {firearm.level}
                   </Typography.Text>
-                  <Typography.Paragraph style={{ marginBottom: 0 }} type="secondary" ellipsis={{ rows: 3 }}>
+                  <Typography.Paragraph
+                    style={{ marginBottom: 0 }}
+                    type="secondary"
+                    ellipsis={{ rows: 3 }}
+                    className="whitespace-pre-line">
                     {firearm.review || "暂无描述"}
                   </Typography.Paragraph>
                 </div>
