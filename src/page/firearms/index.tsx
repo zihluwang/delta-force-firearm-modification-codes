@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { FirearmApi } from "@/api"
 import { Firearm, FirearmType } from "@/types"
-import { Card, Col, Pagination, Row, Select, Tag, Typography } from "antd"
+import { Button, Card, Col, Pagination, Row, Select, Tag, Typography } from "antd"
 
 const firearmTypeText: Record<FirearmType, string> = {
   RIFLE: "步枪",
@@ -65,6 +66,11 @@ export default function FirearmsPage() {
                 styles={{
                   header: { minHeight: 56 },
                 }}
+                actions={[
+                  <Link key={`mod-codes-${firearm.id}`} to={`/mod-codes?firearmId=${firearm.id}`}>
+                    <Button type="link">查看改枪码</Button>
+                  </Link>,
+                ]}
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
