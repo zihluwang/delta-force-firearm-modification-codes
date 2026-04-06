@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { FirearmApi } from "@/api"
 import { Firearm, FirearmType } from "@/types"
-import { Card, Col, Pagination, Row, Tag, Typography } from "antd"
+import { Card, Col, Pagination, Row, Select, Tag, Typography } from "antd"
 
 const firearmTypeText: Record<FirearmType, string> = {
   RIFLE: "步枪",
@@ -14,8 +14,12 @@ const firearmTypeText: Record<FirearmType, string> = {
   SPECIAL: "特殊",
 }
 
+const allTypeValue = "ALL"
+type FirearmTypeFilter = FirearmType | typeof allTypeValue
+
 export default function FirearmsPage() {
   const [page, setPage] = useState<number>(1)
+  const [typeFilter, setTypeFilter] = useState<FirearmTypeFilter>(allTypeValue)
   const [firearms, setFirearms] = useState<Firearm[]>([])
   const [total, setTotal] = useState<number>(0)
 
@@ -25,14 +29,32 @@ export default function FirearmsPage() {
       size: 12,
       sortBy: "id",
       direction: "ASC",
+      type: typeFilter === allTypeValue ? undefined : typeFilter,
     }).then((pagedData) => {
       setFirearms(pagedData.items)
       setTotal(pagedData.totalElements)
     })
-  }, [page])
+  }, [page, typeFilter])
 
   return (
     <>
+      <div className="mb-4 flex justify-end">
+        <Select<FirearmTypeFilter>
+          className="w-full sm:w-64"
+          value={typeFilter}
+          options={[
+            { value: allTypeValue, label: "全部类型" },
+            ...Object.entries(firearmTypeText).map(([value, label]) => ({
+              value,
+              label,
+            })),
+          ]}
+          onChange={(nextType) => {
+            setPage(1)
+            setTypeFilter(nextType)
+          }}
+        />
+      </div>
       <div className="mb-6">
         <Row gutter={[16, 16]}>
           {firearms.map((firearm) => (
@@ -47,13 +69,12 @@ export default function FirearmsPage() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <Tag color="blue">{firearmTypeText[firearm.type]}</Tag>
-                    <Typography.Text type="secondary">ID: {firearm.id}</Typography.Text>
                   </div>
                   <Typography.Text>
-                    <strong>解锁等级：</strong>
+                    <strong>武器输出等级：</strong>
                     {firearm.level}
                   </Typography.Text>
-                  <Typography.Paragraph className="!mb-0" type="secondary" ellipsis={{ rows: 3 }}>
+                  <Typography.Paragraph style={{ marginBottom: 0 }} type="secondary" ellipsis={{ rows: 3 }}>
                     {firearm.review || "暂无描述"}
                   </Typography.Paragraph>
                 </div>
