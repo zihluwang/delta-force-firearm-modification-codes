@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
   readonly VITE_REDUX_STORAGE: "local" | "session"
+  readonly VITE_API_BASE_URL: string
 }
 
 interface ImportMeta {
