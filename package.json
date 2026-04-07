@@ -12,6 +12,7 @@
     "predeploy": "pnpm build"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-virtual": "^3.13.23",
