@@ -59,10 +59,19 @@ export default function ModCodesPage() {
                 }}
               >
                 <div className="flex flex-col gap-3">
-                  <Typography.Paragraph className="mb-0!" copyable={{ text: modification.code }}>
-                    <strong>改枪码：</strong>
-                    {modification.code}
-                  </Typography.Paragraph>
+                  <div className="flex items-center justify-between gap-2">
+                    <span>
+                      <strong>改枪码：</strong>
+                      <code className="bg-gray-400 px-2 py-1 rounded text-sm text-white">{modification.code}</code>
+                    </span>
+                    <Button
+                      type="text"
+                      size="small"
+                      onClick={() => navigator.clipboard.writeText(modification.code)}
+                    >
+                      复制
+                    </Button>
+                  </div>
 
                   <Typography.Text>
                     <strong>作者：</strong>
