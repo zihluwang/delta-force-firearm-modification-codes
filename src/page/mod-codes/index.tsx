@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
-import { Button, Card, Col, Pagination, Row, Space, Tag, Typography } from "antd"
-import { ModificationApi } from "@/api"
+import { Button, Card, Col, Pagination, Row, Select, Space, Tag, Typography } from "antd"
+import { ModificationApi, TagApi } from "@/api"
 import { Modification } from "@/types"
 
 const pageSize = 12
@@ -12,7 +12,16 @@ export default function ModCodesPage() {
 
   const [page, setPage] = useState<number>(1)
   const [modifications, setModifications] = useState<Modification[]>([])
+  const [tagOptions, setTagOptions] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [total, setTotal] = useState<number>(0)
+
+  useEffect(() => {
+    const _firearmId = firearmId ? +firearmId : (void 0)
+    TagApi.getTags(_firearmId).then((tags) => {
+      setTagOptions(tags)
+    })
+  }, [])
 
   useEffect(() => {
     ModificationApi.getModifications({
@@ -21,15 +30,20 @@ export default function ModCodesPage() {
       sortBy: "id",
       direction: "ASC",
       firearmId,
+      tags: selectedTags,
     }).then((pagedData) => {
       setModifications(pagedData.items)
       setTotal(pagedData.totalElements)
     })
-  }, [page, firearmId])
+  }, [page, firearmId, selectedTags])
 
   useEffect(() => {
     setPage(1)
   }, [firearmId])
+
+  useEffect(() => {
+    setPage(1)
+  }, [selectedTags])
 
   return (
     <>
@@ -37,14 +51,34 @@ export default function ModCodesPage() {
         <Typography.Title level={4} className="mb-0!">
           改枪码列表
         </Typography.Title>
-        {firearmId && (
-          <Space>
-            <Tag color="geekblue">武器 ID: {firearmId}</Tag>
+        <Space wrap>
+          <span>标签：</span>
+          <Select<string[]>
+            mode="multiple"
+            allowClear
+            placeholder="请选择标签"
+            className="w-64"
+            value={selectedTags}
+            options={tagOptions.map((tag) => ({ value: tag, label: tag }))}
+            onChange={(values) => {
+              setSelectedTags(values)
+            }}
+          />
+          {firearmId && <Tag color="geekblue">武器 ID: {firearmId}</Tag>}
+          {(firearmId || selectedTags.length > 0) && (
             <Link to="/mod-codes">
-              <Button type="link">清除筛选</Button>
+              <Button
+                type="link"
+                onClick={() => {
+                  setSelectedTags([])
+                  setPage(1)
+                }}
+              >
+                清除筛选
+              </Button>
             </Link>
-          </Space>
-        )}
+          )}
+        </Space>
       </div>
 
       <div className="mb-6">
@@ -56,19 +90,19 @@ export default function ModCodesPage() {
                 variant="outlined"
                 styles={{
                   header: { minHeight: 56 },
-                }}
-              >
+                }}>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between gap-2">
                     <span>
                       <strong>改枪码：</strong>
-                      <code className="bg-gray-400 px-2 py-1 rounded text-sm text-white">{modification.code}</code>
+                      <code className="bg-gray-400 px-2 py-1 rounded text-sm text-white">
+                        {modification.code}
+                      </code>
                     </span>
                     <Button
                       type="text"
                       size="small"
-                      onClick={() => navigator.clipboard.writeText(modification.code)}
-                    >
+                      onClick={() => navigator.clipboard.writeText(modification.code)}>
                       复制
                     </Button>
                   </div>
@@ -86,7 +120,10 @@ export default function ModCodesPage() {
                     </div>
                   )}
 
-                  <Typography.Paragraph style={{ marginBottom: 0 }} type="secondary" ellipsis={{ rows: 3 }}>
+                  <Typography.Paragraph
+                    style={{ marginBottom: 0 }}
+                    type="secondary"
+                    ellipsis={{ rows: 3 }}>
                     {modification.note || "暂无备注"}
                   </Typography.Paragraph>
 
