@@ -18,6 +18,10 @@ const firearmTypeText: Record<FirearmType, string> = {
 const allTypeValue = "ALL"
 type FirearmTypeFilter = FirearmType | typeof allTypeValue
 
+function asDps(fireRate: number, damage: number) {
+  return ((fireRate / 60) * damage).toFixed(2)
+}
+
 export default function FirearmsPage() {
   const [page, setPage] = useState<number>(1)
   const [typeFilter, setTypeFilter] = useState<FirearmTypeFilter>(allTypeValue)
@@ -78,6 +82,14 @@ export default function FirearmsPage() {
                   <Typography.Text>
                     <strong>武器输出等级：</strong>
                     {firearm.level}
+                  </Typography.Text>
+                  <Typography.Text>
+                    <strong>每秒甲伤：</strong>
+                    {asDps(firearm.fireRate, firearm.armourDamage)}
+                  </Typography.Text>
+                  <Typography.Text>
+                    <strong>每秒肉伤：</strong>
+                    {asDps(firearm.fireRate, firearm.bodyDamage)}
                   </Typography.Text>
                   <Typography.Paragraph
                     style={{ marginBottom: 0 }}

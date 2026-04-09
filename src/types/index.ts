@@ -23,6 +23,10 @@ export interface Firearm {
   name: string
   type: FirearmType
   level: string
+  calibre: string
+  fireRate: number
+  armourDamage: number
+  bodyDamage: number
   review: string
 }
 
