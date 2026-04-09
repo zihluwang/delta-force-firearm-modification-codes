@@ -1,24 +1,31 @@
 {
-  "name": "react-template",
+  "name": "delta-force-guide-web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:tar": "pnpm build && tar -czf dist.tar.gz dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "pnpm build && gh-pages -d dist",
     "predeploy": "pnpm build"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-virtual": "^3.13.23",
+    "antd": "^6.3.5",
+    "axios": "^1.14.0",
     "dayjs": "^1.11.20",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-redux": "^9.2.0",
     "react-router": "^7.14.0",
     "react-router-dom": "^7.14.0",
+    "redux-persist": "^6.0.0",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {

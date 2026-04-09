@@ -1,0 +1,38 @@
+import { Direction, Firearm, FirearmType, Page, PageQueryParams } from "@/types"
+import { WebClient } from "@/shared/web-client"
+import { asUrlSearchParam } from "@/utils/query-param-utils.ts"
+
+interface FirearmParams extends PageQueryParams {
+  type?: FirearmType
+}
+
+/**
+ * 查询武器列表
+ *
+ * @param params 分页查询参数¬
+ */
+export async function getFirearms(params?: FirearmParams): Promise<Page<Firearm>> {
+  let uri = "/firearms"
+  const urlSearchParam = asUrlSearchParam(params)
+
+  if (params?.type) {
+    urlSearchParam.append("type", params.type)
+  }
+
+  if (urlSearchParam.size > 0) {
+    uri = uri.concat("?", urlSearchParam.toString())
+  }
+
+  const { data } = await WebClient.get<Page<Firearm>>(uri)
+  return data
+}
+
+/**
+ * 根据 ID 查询武器
+ *
+ * @param id 武器 ID
+ */
+export async function getFirearm(id: number): Promise<Firearm> {
+  const { data } = await WebClient.get<Firearm>(`/firearms/${id}`)
+  return data
+}

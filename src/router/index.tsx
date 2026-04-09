@@ -25,7 +25,11 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          lazy: lazy(() => import("@/page/mod-codes")),
+          lazy: lazy(() => import("@/page/firearms")),
+        },
+        {
+          path: "firearms",
+          lazy: lazy(() => import("@/page/firearms")),
         },
         {
           path: "mod-codes",
