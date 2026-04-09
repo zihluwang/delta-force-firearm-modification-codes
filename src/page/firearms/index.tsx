@@ -84,6 +84,10 @@ export default function FirearmsPage() {
                     {firearm.level}
                   </Typography.Text>
                   <Typography.Text>
+                    <strong>子弹口径：</strong>
+                    {firearm.calibre}
+                  </Typography.Text>
+                  <Typography.Text>
                     <strong>每秒甲伤：</strong>
                     {asDps(firearm.fireRate, firearm.armourDamage)}
                   </Typography.Text>
