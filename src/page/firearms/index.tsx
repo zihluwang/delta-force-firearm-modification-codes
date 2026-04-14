@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { FirearmApi } from "@/api"
+import { useAppSelector } from "@/store"
 import { Firearm, FirearmType } from "@/types"
 import { Button, Card, Col, Pagination, Row, Select, Tag, Typography } from "antd"
 
@@ -23,6 +24,7 @@ function asDps(fireRate: number, damage: number) {
 }
 
 export default function FirearmsPage() {
+  const user = useAppSelector((state) => state.auth.user)
   const [page, setPage] = useState<number>(1)
   const [typeFilter, setTypeFilter] = useState<FirearmTypeFilter>(allTypeValue)
   const [firearms, setFirearms] = useState<Firearm[]>([])
@@ -66,6 +68,13 @@ export default function FirearmsPage() {
             <Col key={firearm.id} xs={24} md={12} lg={8}>
               <Card
                 title={firearm.name}
+                extra={
+                  user ? (
+                    <Button type="link" size="small">
+                      编辑
+                    </Button>
+                  ) : null
+                }
                 variant="outlined"
                 styles={{
                   header: { minHeight: 56 },
