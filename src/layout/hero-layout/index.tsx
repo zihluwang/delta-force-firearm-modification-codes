@@ -1,7 +1,10 @@
 import { Outlet, Link } from "react-router-dom"
 import { useMemo } from "react"
 import dayjs from "dayjs"
-import { useAppSelector } from "@/store"
+import { Dropdown } from "antd"
+import { AuthApi } from "@/api"
+import { useAppDispatch, useAppSelector } from "@/store"
+import { clearCurrentUser } from "@/store/auth-slice"
 
 /**
  * Main application component that serves as the root layout.
@@ -10,6 +13,15 @@ import { useAppSelector } from "@/store"
 export default function HeroLayout() {
   const today = useMemo(() => dayjs(), [])
   const user = useAppSelector((state) => state.auth.user)
+  const dispatch = useAppDispatch()
+
+  async function handleLogout() {
+    try {
+      await AuthApi.logout()
+    } finally {
+      dispatch(clearCurrentUser())
+    }
+  }
 
   return (
     <div className="bg-gray-50">
@@ -36,9 +48,23 @@ export default function HeroLayout() {
                 改枪码
               </Link>
               {user ? (
-                <span className="text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
-                  {user.username}
-                </span>
+                <Dropdown
+                  trigger={["hover"]}
+                  menu={{
+                    items: [
+                      {
+                        key: "logout",
+                        label: "退出登录",
+                        danger: true,
+                        onClick: handleLogout,
+                      },
+                    ],
+                  }}
+                >
+                  <span className="cursor-pointer text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                    {user.username}
+                  </span>
+                </Dropdown>
               ) : (
                 <Link
                   to="/login"

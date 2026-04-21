@@ -7,3 +7,7 @@ export async function login(loginRequest: LoginRequest): Promise<User> {
   })
   return data
 }
+
+export async function logout() {
+  await WebClient.get<void>("/auth/logout")
+}
