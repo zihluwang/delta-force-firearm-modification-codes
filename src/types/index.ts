@@ -27,8 +27,10 @@ export interface Firearm {
   fireRate: number
   armourDamage: number
   bodyDamage: number
-  review: string
+  review: string | null
 }
+
+export interface AddFirearmRequest extends Omit<Firearm, "id"> {}
 
 export interface Modification {
   id: number
