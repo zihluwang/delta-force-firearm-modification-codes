@@ -2,11 +2,13 @@ import { useEffect, useMemo, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { Button, Card, Col, Pagination, Row, Select, Space, Tag, Typography } from "antd"
 import { ModificationApi, TagApi } from "@/api"
+import { useAppSelector } from "@/store"
 import { Modification } from "@/types"
 
 const pageSize = 12
 
 export default function ModCodesPage() {
+  const user = useAppSelector((state) => state.auth.user)
   const [searchParams] = useSearchParams()
   const firearmId = useMemo(() => searchParams.get("firearmId") || undefined, [searchParams])
 
@@ -47,38 +49,41 @@ export default function ModCodesPage() {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between gap-4">
+      <div className="mb-4 flex items-start justify-between gap-4">
         <Typography.Title level={4} className="mb-0!">
           改枪码列表
         </Typography.Title>
-        <Space wrap>
-          <span>标签：</span>
-          <Select<string[]>
-            mode="multiple"
-            allowClear
-            placeholder="请选择标签"
-            className="w-64"
-            value={selectedTags}
-            options={tagOptions.map((tag) => ({ value: tag, label: tag }))}
-            onChange={(values) => {
-              setSelectedTags(values)
-            }}
-          />
-          {firearmId && <Tag color="geekblue">武器 ID: {firearmId}</Tag>}
-          {(firearmId || selectedTags.length > 0) && (
-            <Link to="/mod-codes">
-              <Button
-                type="link"
-                onClick={() => {
-                  setSelectedTags([])
-                  setPage(1)
-                }}
-              >
-                清除筛选
-              </Button>
-            </Link>
-          )}
-        </Space>
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          <Space wrap>
+            <span>标签：</span>
+            <Select<string[]>
+              mode="multiple"
+              allowClear
+              placeholder="请选择标签"
+              className="w-64"
+              value={selectedTags}
+              options={tagOptions.map((tag) => ({ value: tag, label: tag }))}
+              onChange={(values) => {
+                setSelectedTags(values)
+              }}
+            />
+            {firearmId && <Tag color="geekblue">武器 ID: {firearmId}</Tag>}
+            {(firearmId || selectedTags.length > 0) && (
+              <Link to="/mod-codes">
+                <Button
+                  type="link"
+                  onClick={() => {
+                    setSelectedTags([])
+                    setPage(1)
+                  }}
+                >
+                  清除筛选
+                </Button>
+              </Link>
+            )}
+          </Space>
+          {user && <Button type="primary">添加改装</Button>}
+        </div>
       </div>
 
       <div className="mb-6">
@@ -87,6 +92,13 @@ export default function ModCodesPage() {
             <Col key={modification.id} xs={24} md={12} lg={8}>
               <Card
                 title={modification.name}
+                extra={
+                  user ? (
+                    <Button type="link" size="small">
+                      编辑
+                    </Button>
+                  ) : null
+                }
                 variant="outlined"
                 styles={{
                   header: { minHeight: 56 },

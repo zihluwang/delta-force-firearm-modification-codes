@@ -27,8 +27,10 @@ export interface Firearm {
   fireRate: number
   armourDamage: number
   bodyDamage: number
-  review: string
+  review: string | null
 }
+
+export interface AddFirearmRequest extends Omit<Firearm, "id"> {}
 
 export interface Modification {
   id: number
@@ -46,4 +48,15 @@ export interface PageQueryParams {
   size?: number
   sortBy?: string
   direction?: Direction
+}
+
+export interface LoginRequest {
+  principle: string
+  credential: string
+}
+
+export interface User {
+  id: number
+  username: string
+  email: string
 }
