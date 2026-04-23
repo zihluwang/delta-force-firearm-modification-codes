@@ -1,5 +1,5 @@
 import axios from "axios"
-import dayjs from "dayjs"
+import dayjs from "@/shared/dayjs"
 
 const WebClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
