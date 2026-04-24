@@ -269,7 +269,7 @@ export default function ModCodesPage() {
         onCancel={() => setCreateModalOpen(false)}
         onSuccess={() => {
           setCreateModalOpen(false)
-          loadModifications()
+          void loadModifications()
         }}
       />
 
@@ -280,7 +280,7 @@ export default function ModCodesPage() {
         onCancel={() => setEditingModification(null)}
         onSuccess={() => {
           setEditingModification(null)
-          loadModifications()
+          void loadModifications()
         }}
       />
     </>
