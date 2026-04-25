@@ -36,21 +36,20 @@ export default function FirearmsPage() {
   const [editingFirearm, setEditingFirearm] = useState<Firearm | null>(null)
   const [deletingId, setDeletingId] = useState<number | null>(null)
 
-  const loadFirearms = useCallback(() => {
-    return FirearmApi.getFirearms({
+  const loadFirearms = useCallback(async () => {
+    const pagedData = await FirearmApi.getFirearms({
       page: page - 1,
       size: 12,
       sortBy: "id",
       direction: "ASC",
       type: typeFilter === allTypeValue ? undefined : typeFilter,
-    }).then((pagedData) => {
-      setFirearms(pagedData.items)
-      setTotal(pagedData.totalElements)
     })
+    setFirearms(pagedData.items)
+    setTotal(pagedData.totalElements)
   }, [page, typeFilter])
 
   useEffect(() => {
-    loadFirearms()
+    void loadFirearms()
   }, [loadFirearms])
 
   async function handleDelete(firearm: Firearm) {
@@ -61,7 +60,7 @@ export default function FirearmsPage() {
       if (firearms.length === 1 && page > 1) {
         setPage(page - 1)
       } else {
-        loadFirearms()
+        void loadFirearms()
       }
     } catch {
       message.error("武器删除失败，请稍后重试")
@@ -114,8 +113,7 @@ export default function FirearmsPage() {
                         okText="删除"
                         cancelText="取消"
                         okButtonProps={{ danger: true, loading: deletingId === firearm.id }}
-                        onConfirm={() => handleDelete(firearm)}
-                      >
+                        onConfirm={() => handleDelete(firearm)}>
                         <Button type="link" danger size="small" loading={deletingId === firearm.id}>
                           删除
                         </Button>
@@ -198,7 +196,7 @@ export default function FirearmsPage() {
         onCancel={() => setCreateModalOpen(false)}
         onSuccess={() => {
           setCreateModalOpen(false)
-          loadFirearms()
+          void loadFirearms()
         }}
       />
 
@@ -208,7 +206,7 @@ export default function FirearmsPage() {
         onCancel={() => setEditingFirearm(null)}
         onSuccess={() => {
           setEditingFirearm(null)
-          loadFirearms()
+          void loadFirearms()
         }}
       />
     </>
