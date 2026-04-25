@@ -39,7 +39,7 @@ export default function ModCodesPage() {
     })
   }, [firearmId])
 
-  const loadModifications = useCallback(() => {
+  const loadModifications = useCallback(async () => {
     return ModificationApi.getModifications({
       page: page - 1,
       size: pageSize,
@@ -54,7 +54,7 @@ export default function ModCodesPage() {
   }, [page, firearmId, selectedTags])
 
   useEffect(() => {
-    loadModifications()
+    void loadModifications()
   }, [loadModifications])
 
   async function handleDelete(modification: Modification) {
@@ -69,7 +69,7 @@ export default function ModCodesPage() {
       if (modifications.length === 1 && page > 1) {
         setPage(page - 1)
       } else {
-        loadModifications()
+        void loadModifications()
       }
     } catch {
       message.error("改枪码删除失败，请稍后重试")
