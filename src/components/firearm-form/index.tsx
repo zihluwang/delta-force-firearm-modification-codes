@@ -1,5 +1,6 @@
 import { Form, Input, InputNumber, Select } from "antd"
 import { AddFirearmRequest, FirearmType } from "@/types"
+import calibres from "@/constant/calibres.json"
 
 const firearmTypeText: Record<FirearmType, string> = {
   RIFLE: "步枪",
@@ -11,6 +12,11 @@ const firearmTypeText: Record<FirearmType, string> = {
   PISTOL: "手枪",
   SPECIAL: "特殊",
 }
+
+const calibreOptions = calibres.map((calibre) => ({
+  value: calibre,
+  label: calibre,
+}))
 
 interface FirearmFormProps {
   form: ReturnType<typeof Form.useForm<AddFirearmRequest>>[0]
@@ -53,9 +59,14 @@ export default function FirearmForm({ form, onFinish }: FirearmFormProps) {
       <Form.Item<AddFirearmRequest>
         name="calibre"
         label="子弹口径"
-        rules={[{ required: true, message: "请输入子弹口径" }]}
+        rules={[{ required: true, message: "请选择子弹口径" }]}
       >
-        <Input placeholder="例如：5.56x45mm" />
+        <Select
+          placeholder="请选择子弹口径"
+          showSearch
+          optionFilterProp="label"
+          options={calibreOptions}
+        />
       </Form.Item>
 
       <Form.Item<AddFirearmRequest>
@@ -88,4 +99,3 @@ export default function FirearmForm({ form, onFinish }: FirearmFormProps) {
     </Form>
   )
 }
-
