@@ -155,7 +155,15 @@ export default function FirearmsPage() {
                   <Typography.Paragraph
                     style={{ marginBottom: 0 }}
                     type="secondary"
-                    ellipsis={{ rows: 3 }}
+                    ellipsis={{
+                      rows: 3,
+                      tooltip: firearm.review
+                        ? {
+                            title: <div style={{ whiteSpace: "pre-line" }}>{firearm.review}</div>,
+                            placement: "topLeft",
+                          }
+                        : false,
+                    }}
                     className="whitespace-pre-line">
                     {firearm.review || "暂无描述"}
                   </Typography.Paragraph>
