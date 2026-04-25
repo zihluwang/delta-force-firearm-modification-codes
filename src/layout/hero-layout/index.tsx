@@ -1,6 +1,10 @@
 import { Outlet, Link } from "react-router-dom"
 import { useMemo } from "react"
 import dayjs from "dayjs"
+import { Dropdown } from "antd"
+import { AuthApi } from "@/api"
+import { useAppDispatch, useAppSelector } from "@/store"
+import { clearCurrentUser } from "@/store/auth-slice"
 
 /**
  * Main application component that serves as the root layout.
@@ -8,6 +12,16 @@ import dayjs from "dayjs"
  */
 export default function HeroLayout() {
   const today = useMemo(() => dayjs(), [])
+  const user = useAppSelector((state) => state.auth.user)
+  const dispatch = useAppDispatch()
+
+  async function handleLogout() {
+    try {
+      await AuthApi.logout()
+    } finally {
+      dispatch(clearCurrentUser())
+    }
+  }
 
   return (
     <div className="bg-gray-50">
@@ -33,6 +47,32 @@ export default function HeroLayout() {
               >
                 改枪码
               </Link>
+              {user ? (
+                <Dropdown
+                  trigger={["hover"]}
+                  menu={{
+                    items: [
+                      {
+                        key: "logout",
+                        label: "退出登录",
+                        danger: true,
+                        onClick: handleLogout,
+                      },
+                    ],
+                  }}
+                >
+                  <span className="cursor-pointer text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                    {user.username}
+                  </span>
+                </Dropdown>
+              ) : (
+                <Link
+                  to="/login"
+                  className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  登录
+                </Link>
+              )}
               <a
                 href="https://github.com/zihluwang/delta-force-firearm-modification-codes"
                 target="_blank"
