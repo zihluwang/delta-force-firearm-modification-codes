@@ -50,7 +50,7 @@ export default function ModificationCreateModal({
 
     form.setFieldsValue({
       firearmId: lockedFirearmId ?? defaultFirearmId,
-      accessories: [{ slotName: "", accessoryName: "", tunings: [] }],
+      accessories: [],
       tags: [],
     })
   }, [open, defaultFirearmId, lockedFirearmId, form])
@@ -95,6 +95,3 @@ export default function ModificationCreateModal({
     </Modal>
   )
 }
-
-
-
