@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { FirearmApi } from "@/api"
 import slotNames from "@/constant/slots.json"
+import tuningNames from "@/constant/tunings.json"
 import { Firearm, ModificationRequest } from "@/types"
 import { AutoComplete, Button, Card, Form, Input, InputNumber, Select, Space } from "antd"
 
@@ -11,6 +12,7 @@ interface ModificationFormProps {
 }
 
 const slotOptions = slotNames.map((slotName) => ({ value: slotName }))
+const tuningOptions = tuningNames.map((tuningName) => ({ value: tuningName }))
 
 export default function ModificationForm({ form, onFinish, lockFirearmId }: ModificationFormProps) {
   const [firearmOptions, setFirearmOptions] = useState<Array<{ value: number; label: string }>>([])
@@ -164,14 +166,18 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
                         <Space key={tuningField.key} align="start" className="w-full" wrap>
                           <Form.Item
                             name={[tuningField.name, "tuningName"]}
-                            label="调校项"
-                            rules={[{ required: true, message: "请输入调校项" }]}>
-                            <Input placeholder="例如：后坐控制" className="w-44" />
+                            label="精校属性"
+                            rules={[{ required: true, message: "请选择或输入精校属性" }]}>
+                            <AutoComplete
+                              options={tuningOptions}
+                              placeholder="例如：后坐控制"
+                              className="w-44"
+                            />
                           </Form.Item>
                           <Form.Item
                             name={[tuningField.name, "tuningValue"]}
-                            label="调校值"
-                            rules={[{ required: true, message: "请输入调校值" }]}>
+                            label="精校值"
+                            rules={[{ required: true, message: "请输入精校值" }]}>
                             <InputNumber className="w-32" placeholder="例如：0.35" />
                           </Form.Item>
                           <Button
@@ -186,7 +192,7 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
                       <Button
                         type="dashed"
                         onClick={() => addTuning({ tuningName: "", tuningValue: 0 })}>
-                        添加调校
+                        添加精校
                       </Button>
                     </div>
                   )}
@@ -204,6 +210,4 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
     </Form>
   )
 }
-
-
 
