@@ -1,4 +1,16 @@
-import { App, Button, Card, Col, Pagination, Popconfirm, Row, Select, Space, Tag, Typography } from "antd"
+import {
+  App,
+  Button,
+  Card,
+  Col,
+  Pagination,
+  Popconfirm,
+  Row,
+  Select,
+  Space,
+  Tag,
+  Typography,
+} from "antd"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { ModificationApi, TagApi } from "@/api"
@@ -39,7 +51,7 @@ export default function ModCodesPage() {
     })
   }, [firearmId])
 
-  const loadModifications = useCallback(() => {
+  const loadModifications = useCallback(async () => {
     return ModificationApi.getModifications({
       page: page - 1,
       size: pageSize,
@@ -54,7 +66,7 @@ export default function ModCodesPage() {
   }, [page, firearmId, selectedTags])
 
   useEffect(() => {
-    loadModifications()
+    void loadModifications()
   }, [loadModifications])
 
   async function handleDelete(modification: Modification) {
@@ -69,7 +81,7 @@ export default function ModCodesPage() {
       if (modifications.length === 1 && page > 1) {
         setPage(page - 1)
       } else {
-        loadModifications()
+        void loadModifications()
       }
     } catch {
       message.error("改枪码删除失败，请稍后重试")
@@ -114,8 +126,7 @@ export default function ModCodesPage() {
                   onClick={() => {
                     setSelectedTags([])
                     setPage(1)
-                  }}
-                >
+                  }}>
                   清除筛选
                 </Button>
               </Link>
@@ -138,7 +149,10 @@ export default function ModCodesPage() {
                 extra={
                   user ? (
                     <div className="flex items-center gap-1">
-                      <Button type="link" size="small" onClick={() => setEditingModification(modification)}>
+                      <Button
+                        type="link"
+                        size="small"
+                        onClick={() => setEditingModification(modification)}>
                         编辑
                       </Button>
                       <Popconfirm
@@ -147,9 +161,12 @@ export default function ModCodesPage() {
                         okText="删除"
                         cancelText="取消"
                         okButtonProps={{ danger: true, loading: deletingId === modification.id }}
-                        onConfirm={() => handleDelete(modification)}
-                      >
-                        <Button type="link" danger size="small" loading={deletingId === modification.id}>
+                        onConfirm={() => handleDelete(modification)}>
+                        <Button
+                          type="link"
+                          danger
+                          size="small"
+                          loading={deletingId === modification.id}>
                           删除
                         </Button>
                       </Popconfirm>
@@ -195,15 +212,23 @@ export default function ModCodesPage() {
                       <div className="mt-2 overflow-x-auto">
                         <div className="grid min-w-275 grid-cols-5 gap-2">
                           {(modification.accessories || []).map((accessory, accessoryIndex) => (
-                            <div key={`${modification.id}-accessory-${accessoryIndex}`} className="rounded border border-gray-100 p-2">
+                            <div
+                              key={`${modification.id}-accessory-${accessoryIndex}`}
+                              className="rounded border border-gray-100 p-2">
                               <div className="flex items-center justify-between gap-2 rounded bg-gray-50 px-2 py-1">
-                                <Tag color="blue" className="mr-0">{accessory.slotName || "未填写槽位"}</Tag>
-                                <Tag className="mr-0">{accessory.accessoryName || "未填写配件"}</Tag>
+                                <Typography color="blue" className="mr-0">
+                                  {accessory.slotName || "未填写槽位"}
+                                </Typography>
+                                <Typography className="mr-0 text-[#4C1D95]">
+                                  {accessory.accessoryName || "未填写配件"}
+                                </Typography>
                               </div>
                               {(accessory.tunings?.length || 0) > 0 ? (
                                 <div className="mt-2 flex flex-wrap gap-1">
                                   {accessory.tunings.map((tuning, tuningIndex) => (
-                                    <Tag key={`${modification.id}-${accessoryIndex}-tuning-${tuningIndex}`} color="geekblue">
+                                    <Tag
+                                      key={`${modification.id}-${accessoryIndex}-tuning-${tuningIndex}`}
+                                      color="geekblue">
                                       {tuning.tuningName || "未命名"}: {tuning.tuningValue ?? "-"}
                                     </Tag>
                                   ))}
