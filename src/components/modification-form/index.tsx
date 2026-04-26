@@ -66,7 +66,10 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
   }, [])
 
   const mergedFirearmOptions = useMemo(() => {
-    if (lockFirearmId === undefined || firearmOptions.some((option) => option.value === lockFirearmId)) {
+    if (
+      lockFirearmId === undefined ||
+      firearmOptions.some((option) => option.value === lockFirearmId)
+    ) {
       return firearmOptions
     }
 
@@ -191,6 +194,7 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
                       ))}
                       <Button
                         type="dashed"
+                        disabled={tuningFields.length >= 2}
                         onClick={() => addTuning({ tuningName: "", tuningValue: 0 })}>
                         添加精校
                       </Button>
@@ -200,7 +204,8 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
               </Card>
             ))}
             <Button
-              type="dashed"
+              variant="solid"
+              color="lime"
               onClick={() => addAccessory({ slotName: "", accessoryName: "", tunings: [] })}>
               添加配件
             </Button>
@@ -210,4 +215,3 @@ export default function ModificationForm({ form, onFinish, lockFirearmId }: Modi
     </Form>
   )
 }
-
