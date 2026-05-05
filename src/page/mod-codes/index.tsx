@@ -19,7 +19,7 @@ import ModificationEditModal from "@/components/modification-edit-modal"
 import { useAppSelector } from "@/store"
 import { Modification } from "@/types"
 
-const pageSize = 12
+const pageSize = 10
 
 export default function ModCodesPage() {
   const user = useAppSelector((state) => state.auth.user)
