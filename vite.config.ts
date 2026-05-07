@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/",
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) {
@@ -22,7 +22,6 @@ export default defineConfig({
           if (id.includes("redux") || id.includes("immer")) {
             return "redux-vendor"
           }
-
 
           if (id.includes("/node_modules/@ant-design/")) {
             return "ant-design-vendor"
@@ -47,5 +46,5 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-  }
+  },
 })
