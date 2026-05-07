@@ -7,6 +7,42 @@ import tailwindcss from "@tailwindcss/vite"
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/",
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) {
+            return
+          }
+
+          if (id.includes("react-router")) {
+            return "router-vendor"
+          }
+
+          if (id.includes("redux") || id.includes("immer")) {
+            return "redux-vendor"
+          }
+
+
+          if (id.includes("/node_modules/@ant-design/")) {
+            return "ant-design-vendor"
+          }
+
+          if (id.includes("/node_modules/rc-")) {
+            return "antd-rc-vendor"
+          }
+
+          if (
+            id.includes("/node_modules/react/") ||
+            id.includes("/node_modules/react-dom/") ||
+            id.includes("/node_modules/scheduler/")
+          ) {
+            return "react-vendor"
+          }
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

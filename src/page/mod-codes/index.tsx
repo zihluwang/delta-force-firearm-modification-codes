@@ -16,7 +16,7 @@ import { Link, useSearchParams } from "react-router-dom"
 import { ModificationApi, TagApi } from "@/api"
 import ModificationCreateModal from "@/components/modification-create-modal"
 import ModificationEditModal from "@/components/modification-edit-modal"
-import { useAppSelector } from "@/store"
+import { useAppSelector } from "@/store/hooks"
 import { Modification } from "@/types"
 
 const pageSize = 10

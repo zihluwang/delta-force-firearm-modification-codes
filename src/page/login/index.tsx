@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { App, Button, Card, Form, Input, Typography } from "antd"
 import { AuthApi } from "@/api"
-import { useAppDispatch } from "@/store"
+import { useAppDispatch } from "@/store/hooks"
 import { setCurrentUser } from "@/store/auth-slice"
 import { LoginRequest } from "@/types"
 

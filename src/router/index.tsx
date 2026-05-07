@@ -13,6 +13,8 @@ function lazy<T extends { default: ComponentType<unknown> }>(importer: () => Pro
   }
 }
 
+const hydrateFallbackElement = <div className="px-4 py-6 text-gray-500">页面加载中...</div>
+
 /**
  * Main application router configuration using React Router v6.
  * Defines all routes and their corresponding components.
@@ -22,11 +24,13 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <HeroLayout />,
+      hydrateFallbackElement,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
           lazy: lazy(() => import("@/page/firearms")),
+
         },
         {
           path: "firearms",
@@ -40,6 +44,7 @@ const router = createBrowserRouter(
     },
     {
       element: <EmptyLayout />,
+      hydrateFallbackElement,
       errorElement: <ErrorPage />,
       children: [
         {

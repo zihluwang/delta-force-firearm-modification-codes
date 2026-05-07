@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import dayjs from "dayjs"
 import { Dropdown } from "antd"
 import { AuthApi } from "@/api"
-import { useAppDispatch, useAppSelector } from "@/store"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { clearCurrentUser } from "@/store/auth-slice"
 
 /**

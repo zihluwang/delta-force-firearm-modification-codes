@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { FirearmApi } from "@/api"
 import FirearmCreateModal from "@/components/firearm-create-modal"
 import FirearmEditModal from "@/components/firearm-edit-modal"
-import { useAppSelector } from "@/store"
+import { useAppSelector } from "@/store/hooks"
 import { Firearm, FirearmType } from "@/types"
 import { Button, Card, Col, Pagination, Popconfirm, Row, Select, Tag, Typography, App } from "antd"
 
